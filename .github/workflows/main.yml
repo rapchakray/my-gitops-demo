@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    # Skip builds for image updater commits
+    # Skip builds for image updater commits important for keeping the commit history clean and avoiding unnecessary builds
     paths-ignore:
       - "Kubernetes-manifest/**"
 
