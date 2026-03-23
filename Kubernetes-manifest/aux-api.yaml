@@ -4,7 +4,7 @@ metadata:
   name: aux-deployment
   namespace: argocd-demo-ns
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: aux-service
