@@ -41,12 +41,17 @@ jobs:
           username: ${{ env.DOCKER_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: Sanitize variables
+        run: |
+          echo "DOCKER_USER=$(echo ${{ env.DOCKER_USER }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "SERVICE=$(echo ${{ matrix.service }} | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g')" >> $GITHUB_ENV
+
       - name: Build and Push ${{ matrix.service }}
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: raulalanischakray/${{ env.SERVICE }}:${{ env.RUN_TAG }}
+          tags: ${{ env.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.RUN_TAG }}
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
